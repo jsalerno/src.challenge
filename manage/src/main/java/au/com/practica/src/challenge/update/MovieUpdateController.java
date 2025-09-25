@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import au.com.practica.src.challenge.bean.Movie;
+import au.com.practica.src.challenge.bean.MovieAttributes;
 import au.com.practica.src.challenge.model.EditMovieModelAssembler;
 import au.com.practica.src.challenge.service.ManagementService;
 
@@ -24,7 +25,7 @@ public class MovieUpdateController {
 	private ManagementService mgt;
 
 	@PostMapping("/movies/add")
-	public EntityModel<Movie> add(@RequestBody(required = true) Movie example) {
+	public EntityModel<Movie> add(@RequestBody(required = true) MovieAttributes example) {
 		return editAssembler.toModel(mgt.addMovie(example));
 	}
 
@@ -34,7 +35,7 @@ public class MovieUpdateController {
 	}
 
 	@PatchMapping("/movies/patchAttributes")
-	public EntityModel<Movie> update(@RequestBody(required = true) Movie update) {
+	public EntityModel<Movie> update(@RequestBody(required = true) MovieAttributes update) {
 		return editAssembler.toModel(mgt.updateMovie(update));
 	}
 

@@ -13,9 +13,9 @@ public class EditActorModelAssembler extends ActorModelAssembler {
 	@Override
 	public EntityModel<Actor> toModel(Actor actor) {
 		EntityModel<Actor> of = super.toModel(actor);
-		of.add(linkTo(methodOn(ActorUpdateController.class).add(actor)).withRel("add"));
+		of.add(linkTo(methodOn(ActorUpdateController.class).add(actor.toAttributes())).withRel("add"));
 		of.add(linkTo(methodOn(ActorUpdateController.class).delete(actor.getActorId())).withRel("delete"));
-		of.add(linkTo(methodOn(ActorUpdateController.class).update(actor)).withRel("update"));
+		of.add(linkTo(methodOn(ActorUpdateController.class).update(actor.toAttributes())).withRel("update"));
 		return of;
 	}
 }

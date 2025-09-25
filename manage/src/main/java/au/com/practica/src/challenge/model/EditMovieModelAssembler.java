@@ -14,9 +14,9 @@ public class EditMovieModelAssembler extends MovieModelAssembler {
 	public EntityModel<Movie> toModel(Movie mov) {
 		EntityModel<Movie> of = super.toModel(mov);
 
-		of.add(linkTo(methodOn(MovieUpdateController.class).add(mov)).withRel("add"));
+		of.add(linkTo(methodOn(MovieUpdateController.class).add(mov.toAttributes())).withRel("add"));
 		of.add(linkTo(methodOn(MovieUpdateController.class).delete(mov.getMovieId())).withRel("delete"));
-		of.add(linkTo(methodOn(MovieUpdateController.class).update(mov)).withRel("update"));
+		of.add(linkTo(methodOn(MovieUpdateController.class).update(mov.toAttributes())).withRel("update"));
 
 		of.add(linkTo(methodOn(MovieUpdateController.class).addActor(mov.getMovieId(), null)).withRel("addActor"));
 		of.add(linkTo(methodOn(MovieUpdateController.class).removeActor(mov.getMovieId(), null)).withRel("removeActor"));

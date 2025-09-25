@@ -20,7 +20,7 @@ public class MovieModelAssembler implements RepresentationModelAssembler<Movie, 
 			linkTo(methodOn(MovieController.class).one(movie.getId())).withSelfRel(),
 			linkTo(methodOn(MovieController.class).paged(Pageable.ofSize(10))).withRel("movies"));
 
-		of.add(linkTo(methodOn(MovieController.class).getAllActors(movie.getMovieId())).withRel("movies"));
+		of.add(linkTo(methodOn(MovieController.class).getAllActors(movie.getMovieId())).withRel("actors"));
 		return of;
 	}
 }

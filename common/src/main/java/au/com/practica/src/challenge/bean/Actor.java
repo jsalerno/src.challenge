@@ -32,6 +32,10 @@ public class Actor extends RepresentationModel<Actor> implements Identifiable<Lo
 	private @NonNull String lastName;
 	private @NonNull Long dob;
 
+	public Actor(ActorAttributes attrs) {
+		this(attrs.getFirstName(), attrs.getLastName(), attrs.getDob());
+	}
+
 	@Override
 	public Long getId() {
 		return actorId;
@@ -59,5 +63,9 @@ public class Actor extends RepresentationModel<Actor> implements Identifiable<Lo
 	@Override
 	public int hashCode() {
 		return Objects.hash(this.actorId, this.firstName, this.lastName, this.dob);
+	}
+
+	public ActorAttributes toAttributes() {
+		return new ActorAttributes(actorId, firstName, lastName, dob);
 	}
 }

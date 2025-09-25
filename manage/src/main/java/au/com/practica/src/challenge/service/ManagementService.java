@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import au.com.practica.src.challenge.bean.Actor;
+import au.com.practica.src.challenge.bean.ActorAttributes;
 import au.com.practica.src.challenge.bean.Movie;
+import au.com.practica.src.challenge.bean.MovieAttributes;
 import lombok.NonNull;
 
 @Component
@@ -24,15 +26,18 @@ public class ManagementService {
 	@Autowired
 	private MovieUpdateService movieUpdateService;
 
-	public Actor addActor(@NonNull Actor item) {
-		return actorUpdateService.create(item);
+	public Actor addActor(@NonNull ActorAttributes item) {
+		return actorUpdateService.create(new Actor(item));
 	}
 
-	public Actor updateActor(@NonNull Actor item) {
-		return Optional.ofNullable(actorService.findById(item)).map(a -> {
-			item.setMovies(a.getMovies());
-			return actorUpdateService.update(item);
-		}).orElseThrow(() -> new RuntimeException("Actor with Id '" + item.getId() + " does not exist"));
+	public Actor updateActor(@NonNull ActorAttributes item) {
+		Actor actor = new Actor(item);
+		actor.setActorId(item.getActorId());
+
+		return Optional.ofNullable(actorService.findById(actor)).map(a -> {
+			actor.setMovies(a.getMovies());
+			return actorUpdateService.update(actor);
+		}).orElseThrow(() -> new RuntimeException("Actor with Id '" + item.getActorId() + " does not exist"));
 	}
 
 	@Transactional
@@ -82,8 +87,8 @@ public class ManagementService {
 
 	}
 
-	public Movie addMovie(@NonNull Movie item) {
-		return movieUpdateService.create(item);
+	public Movie addMovie(@NonNull MovieAttributes item) {
+		return movieUpdateService.create(new Movie(item));
 	}
 
 	public Movie deleteMovie(@NonNull String id) {
@@ -106,10 +111,12 @@ public class ManagementService {
 
 	}
 
-	public Movie updateMovie(@NonNull Movie item) {
-		return Optional.ofNullable(movieService.findById(item)).map(a -> {
-			// item.setMovies(a.getMovies());
-			return movieUpdateService.update(item);
-		}).orElseThrow(() -> new RuntimeException("Movie with Id '" + item.getId() + " does not exist"));
+	public Movie updateMovie(@NonNull MovieAttributes item) {
+		Movie movie = new Movie(item);
+		movie.setMovieId(item.getMovieId());
+
+		return Optional.ofNullable(movieService.findById(movie)).map(a -> {
+			return movieUpdateService.update(movie);
+		}).orElseThrow(() -> new RuntimeException("Movie with Id '" + item.getMovieId() + " does not exist"));
 	}
 }

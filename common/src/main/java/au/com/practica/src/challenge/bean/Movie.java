@@ -38,6 +38,11 @@ public class Movie extends RepresentationModel<Movie> implements Identifiable<St
 	private @NonNull Integer releaseYear;
 	private List<String> resources = new ArrayList<>();
 
+	public Movie(MovieAttributes attrs) {
+		this(attrs.getMovieId(), attrs.getName(), attrs.getDescription(), attrs.getReleaseYear());
+		this.setResources(attrs.getResources());
+	}
+
 	@JsonManagedReference
 	@ManyToMany(cascade = { CascadeType.ALL })
 	@JoinTable(name = "Movie_Actors", joinColumns = { @JoinColumn(name = "movieId") }, inverseJoinColumns = { @JoinColumn(name = "actorId") })
@@ -67,5 +72,11 @@ public class Movie extends RepresentationModel<Movie> implements Identifiable<St
 
 	public void addActor(Actor actor) {
 		actors.add(actor);
+	}
+
+	public MovieAttributes toAttributes() {
+		MovieAttributes attrs = new MovieAttributes(movieId, name, description, releaseYear);
+		attrs.setResources(resources);
+		return attrs;
 	}
 }
