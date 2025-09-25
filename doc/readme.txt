@@ -12,7 +12,7 @@ It inserts sample items into the collections at startup via class SampleData.
 
 Collections are implemented via JpaRepository extensions.
 
-The Browse app can be shut down at any time (let's say we've had a security breach and we want to stop all Authors from committing changes),
+The Manage app can be shut down at any time (let's say we've had a security breach and we want to stop all Authors from committing changes),
 whilst the Browse app can remain running (for data consumers like REST clients and browsers if we add a frontend).
 
 The H2 db developer console is accessible via Browse at http://localhost:8090/h2-console (it does not have security applied for the purpose of this mini project).
