@@ -22,21 +22,22 @@ public class ResourceServerConfig {
 	}
 
 	@Bean
-	public SecurityFilterChain resourceServerSecurityFilterChain(HttpSecurity http) throws Exception {
+	SecurityFilterChain resourceServerSecurityFilterChain(HttpSecurity http) throws Exception {
 		http
+			/* Basic */
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/auth/register", "/auth/login").permitAll()
 				.requestMatchers("/browse/**").permitAll()
-				.requestMatchers("/manage/**").permitAll()
+				// .requestMatchers("/manage/**").permitAll()
 				.requestMatchers("/h2-console").permitAll()
 				.anyRequest().authenticated())
+			/* OAuth2 */
 			.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
-
 		return http.build();
 	}
 
 	@Bean
-	public AuthenticationManager authenticationManager() {
+	AuthenticationManager authenticationManager() {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 		provider.setUserDetailsService(userService);
 		provider.setPasswordEncoder(passwordEncoder());
@@ -44,12 +45,12 @@ public class ResourceServerConfig {
 	}
 
 	@Bean
-	public UserDetailsService userDetailsService() {
+	UserDetailsService userDetailsService() {
 		return userService;
 	}
 
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 }

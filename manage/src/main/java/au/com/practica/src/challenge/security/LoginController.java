@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 public class LoginController {
-
 	private final AuthenticationManager authenticationManager;
 	private final JwtEncoder jwtEncoder;
 
@@ -30,8 +29,7 @@ public class LoginController {
 
 	@PostMapping(value = "/login", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public Map<String, String> login(
-		@RequestParam MultiValueMap<String,String> loginRequest) {
-//		Map<String, String> loginRequest) {
+		@RequestParam MultiValueMap<String, String> loginRequest) {
 		String username = loginRequest.get("username").get(0);
 		String password = loginRequest.get("password").get(0);
 

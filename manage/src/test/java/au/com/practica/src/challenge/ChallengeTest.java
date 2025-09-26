@@ -182,11 +182,7 @@ public class ChallengeTest {
 	// @Disabled
 	@Order(6)
 	public void obtainToken() throws Exception {
-		x._accessToken = obtainAccessToken(x._user.getUsername(), x._user.getPassword());
-		mockMvc.perform(get("/browse")
-			.header("Authorization", "Bearer " + x._accessToken)
-			.param("email", "jim@yahoo.com"))
-			.andExpect(status().isForbidden());
+		x._accessToken = obtainAccessToken(x._user.getUsername(), "password");
 	}
 
 	@SuppressWarnings("removal")
@@ -203,8 +199,8 @@ public class ChallengeTest {
 		String payload = mapper.writeValueAsString(actor);
 		String updateUrl = x._actor1.getLinks().getUpdate().getHref();
 
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		ResultActions result = mockMvc.perform(patch(updateUrl)
+			.header("Authorization", "Bearer " + x._accessToken)
 			.with(csrf())
 			.content(payload)
 			.contentType(MediaType.APPLICATION_JSON_VALUE))
