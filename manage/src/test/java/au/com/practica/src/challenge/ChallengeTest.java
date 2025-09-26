@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.text.StringSubstitutor;
 import org.junit.After;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -66,6 +67,7 @@ public class ChallengeTest {
 		private RestCollectionQueryResult _actor1;
 		private RestCollectionQueryResult _actor2;
 		private RestCollectionQueryResult _actorMovies;
+		private RestCollectionQueryResult _actor3;
 
 		private String _moviesUri;
 		private RestCollectionQueryResult _movies;
@@ -176,10 +178,18 @@ public class ChallengeTest {
 		x._actorMovies = readResult(result.andReturn().getResponse().getContentAsString());
 
 		/* take the first movie and store it */
+		x._movie = readResult(readMovie(0).andReturn().getResponse().getContentAsString());
+		;
+	}
+
+	private ResultActions readMovie(int index) throws Exception {
+		String url = urlFor(x._actorMovies.getEmbedded(), index, "movieList", "self");
+		ResultActions result = mockMvc.perform(get(url));
+		result.andExpect(status().isOk());
+		return result;
 	}
 
 	@Test
-	// @Disabled
 	@Order(6)
 	public void obtainToken() throws Exception {
 		x._accessToken = obtainAccessToken(x._user.getUsername(), "password");
@@ -207,7 +217,46 @@ public class ChallengeTest {
 			.andDo(print())
 			.andExpect(status().isOk());
 
-		RestCollectionQueryResult updated = readResult(result.andReturn().getResponse().getContentAsString());
+		x._actor1 = readResult(result.andReturn().getResponse().getContentAsString());
+	}
+
+	@Test
+	@Order(8)
+	public void addActor() throws Exception {
+		ActorAttributes actor = new ActorAttributes();
+		actor.setFirstName("Fred");
+		actor.setLastName("Smith");
+		actor.setDob(SampleData.sdf.parse("1970/06/06").getTime());
+
+		String payload = mapper.writeValueAsString(actor);
+		String addUrl = x._actor1.getLinks().getAdd().getHref();
+
+		ResultActions result = mockMvc.perform(post(addUrl)
+			.header("Authorization", "Bearer " + x._accessToken)
+			.with(csrf())
+			.content(payload)
+			.contentType(MediaType.APPLICATION_JSON_VALUE))
+			.andDo(print())
+			.andExpect(status().isOk());
+
+		x._actor3 = readResult(result.andReturn().getResponse().getContentAsString());
+	}
+
+	@Test
+	@Order(9)
+	public void addActorToMovie() throws Exception {
+		String addUrlT = x._movie.getLinks().getAddActor().getHref().replace("{actorId}", "${actorId}");
+		Object actorId = x._actor3.getUnknown().get("actorId");
+		String addActorUrl = StringSubstitutor.replace(addUrlT, Map.of("actorId", actorId));
+
+		ResultActions result = mockMvc.perform(patch(addActorUrl)
+			.header("Authorization", "Bearer " + x._accessToken)
+			.with(csrf())
+			.contentType(MediaType.APPLICATION_JSON_VALUE))
+			.andDo(print())
+			.andExpect(status().isOk());
+
+		x._movie = readResult(result.andReturn().getResponse().getContentAsString());
 	}
 
 	@SuppressWarnings("unchecked")

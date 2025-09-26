@@ -83,7 +83,6 @@ public class ManagementService {
 
 		actorUpdateService.delete(byId);
 		return byId;
-		// TODO Auto-generated method stub
 
 	}
 

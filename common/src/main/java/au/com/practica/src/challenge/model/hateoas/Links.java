@@ -22,4 +22,8 @@ public class Links {
 	private HRef delete;
 	@JsonProperty("update")
 	private HRef update;
+	@JsonProperty("addActor")
+	private HRef addActor;
+	@JsonProperty("removeActor")
+	private HRef removeActor;
 }
