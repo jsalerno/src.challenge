@@ -92,3 +92,5 @@ All runtime exceptions are propagated or explicit Runtime exceptions are thrown 
 when contraints are broken or conditions are unmet.
 
 TEST CASES via MockMvc REST calls: coverage of most of the entity lifecycle events
+
+EXECUTION (before docker) : run build.and.test.sh
