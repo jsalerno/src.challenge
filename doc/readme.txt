@@ -91,6 +91,4 @@ EXCEPTION handling
 All runtime exceptions are propagated or explicit Runtime exceptions are thrown (no Exception class hierarchies have been designed)
 when contraints are broken or conditions are unmet.
 
-(Integration) TEST CASES via HTTP REST calls:
-
-WIP ....
+TEST CASES via MockMvc REST calls: coverage of most of the entity lifecycle events
