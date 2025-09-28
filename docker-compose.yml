@@ -13,8 +13,7 @@ services:
         networks:
             - spring-cloud-network
         healthcheck:
-#            test: ["CMD", "curl", "-f", "http://browse-server:8887/browse"]
-            test: "curl http://browse-server:8887/browse"
+            test: ["CMD", "curl", "-f", "http://browse-server:8887/browse"]
             interval: 30s
             timeout: 10s
             retries: 3
