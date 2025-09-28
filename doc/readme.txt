@@ -93,4 +93,18 @@ when contraints are broken or conditions are unmet.
 
 TEST CASES via MockMvc REST calls: coverage of most of the entity lifecycle events
 
-EXECUTION (before docker) : run build.and.test.sh
+BUILD & EXECUTION
+
+[A] MockMvc Junit Tests
+run ./build.and.test.sh
+
+[B] Docker
+docker-compose up --build
+
+@jsalerno@vist-jsalerno:~/eclipse-workspace/src.si/github/challenge/github.challenge$ sudo docker image ls -a
+REPOSITORY                            TAG              IMAGE ID       CREATED             SIZE
+manage-server                         latest           47f64638493f   20 minutes ago      389MB
+browse-server                         latest           e8b64be374b9   20 minutes ago      378MB
+
+
+[aside: mvn spring-boot:build-image has an issue resolving the common.jar]

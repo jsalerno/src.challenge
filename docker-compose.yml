@@ -1,0 +1,38 @@
+version: '2'
+services:
+    browse-server:
+        container_name: browse-server
+        build:
+            context: browse
+            dockerfile: Browse.Dockerfile
+        image: browse-server:latest
+        deploy:
+            replicas: 1
+        ports:
+            - 8887-8887:8090
+        networks:
+            - spring-cloud-network
+        healthcheck:
+#            test: ["CMD", "curl", "-f", "http://browse-server:8887/browse"]
+            test: "curl http://browse-server:8887/browse"
+            interval: 30s
+            timeout: 10s
+            retries: 3
+    manage-server:
+        container_name: manage-server
+        build:
+            context: manage
+            dockerfile: Manage.Dockerfile
+        depends_on:
+            browse-server:
+                condition: service_healthy
+        image: manage-server:latest
+        deploy:
+            replicas: 1
+        ports:
+            - 8888-8888:8091
+        networks:
+            - spring-cloud-network
+networks:
+    spring-cloud-network:
+        driver: bridge
